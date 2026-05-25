@@ -1,104 +1,150 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub + Google Apps Script</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial, sans-serif;
-    }
+<title>GitHub + Google Apps Script</title>
 
-    body{
-      background:#f1f5f9;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-    }
+<style>
 
-    .card{
-      background:white;
-      width:350px;
-      padding:30px;
-      border-radius:20px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.1);
-      text-align:center;
-    }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
 
-    h2{
-      margin-bottom:20px;
-      color:#0f172a;
-    }
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#2563eb,#1e40af);
+}
 
-    button{
-      background:#2563eb;
-      color:white;
-      border:none;
-      padding:12px 20px;
-      border-radius:10px;
-      cursor:pointer;
-      font-size:16px;
-      transition:0.3s;
-    }
+.card{
+    width:400px;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+}
 
-    button:hover{
-      background:#1d4ed8;
-    }
+h1{
+    color:#111827;
+    margin-bottom:10px;
+}
 
-    #hasil{
-      margin-top:20px;
-      background:#f8fafc;
-      padding:15px;
-      border-radius:10px;
-      text-align:left;
-      min-height:80px;
-    }
-  </style>
+p{
+    color:#6b7280;
+    margin-bottom:25px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+#hasil{
+    margin-top:25px;
+    background:#f3f4f6;
+    padding:20px;
+    border-radius:15px;
+    text-align:left;
+    min-height:120px;
+    line-height:1.8;
+}
+
+.success{
+    color:green;
+}
+
+.error{
+    color:red;
+}
+
+.loading{
+    text-align:center;
+    color:#2563eb;
+}
+
+</style>
 </head>
 <body>
 
 <div class="card">
-  <h2>Google Apps Script API</h2>
 
-  <button onclick="ambilData()">
-    Ambil Data
-  </button>
+    <h1>Google Apps Script API</h1>
 
-  <div id="hasil">
-    Menunggu data...
-  </div>
+    <p>GitHub Pages Terhubung Langsung ke GAS</p>
+
+    <button onclick="ambilData()">
+        Ambil Data
+    </button>
+
+    <div id="hasil">
+        Menunggu data...
+    </div>
+
 </div>
 
 <script>
 
 async function ambilData(){
 
-  // GANTI DENGAN LINK WEB APP GAS KAMU
-  const url = "https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec";
+    const hasil = document.getElementById("hasil");
 
-  try{
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    document.getElementById("hasil").innerHTML = `
-      <b>Status:</b> ${data.status}<br><br>
-      <b>Pesan:</b> ${data.message}<br><br>
-      <b>Waktu:</b> ${data.waktu}
+    hasil.innerHTML = `
+        <div class="loading">
+            Mengambil data...
+        </div>
     `;
 
-  }catch(error){
+    // GANTI URL INI DENGAN WEB APP GOOGLE APPS SCRIPT KAMU
+    const url = "https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec";
 
-    document.getElementById("hasil").innerHTML =
-      "Gagal mengambil data!";
+    try {
 
-    console.log(error);
-  }
+        const response = await fetch(url);
+
+        const data = await response.json();
+
+        hasil.innerHTML = `
+            <div class="success">
+                ✔ Berhasil mengambil data
+            </div>
+
+            <hr><br>
+
+            <b>Status :</b> ${data.status}<br>
+            <b>Pesan :</b> ${data.message}<br>
+            <b>Waktu :</b> ${data.waktu}
+        `;
+
+    } catch(error){
+
+        hasil.innerHTML = `
+            <div class="error">
+                ❌ Gagal mengambil data dari GAS
+            </div>
+        `;
+
+        console.log(error);
+    }
+
 }
 
 </script>
