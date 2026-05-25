@@ -2,619 +2,66 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Peluncur Google Apps Script - GitHub Pages</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAS Runner - Simple</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f5 100%);
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .card {
-            max-width: 1300px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(0px);
-            border-radius: 2rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        /* header */
-        .header {
-            background: #1e293b;
-            padding: 1.5rem 2rem;
-            color: white;
-            border-bottom: 1px solid #334155;
-        }
-
-        .header h1 {
-            font-weight: 600;
-            font-size: 1.8rem;
-            letter-spacing: -0.3px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header h1::before {
-            content: "📜";
-            font-size: 1.8rem;
-        }
-
-        .header p {
-            color: #cbd5e1;
-            margin-top: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #0f172a;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-family: monospace;
-            margin-top: 0.5rem;
-            border: 1px solid #334155;
-        }
-
-        /* konten utama */
-        .content {
-            padding: 2rem;
-        }
-
-        /* panel kontrol */
-        .control-panel {
-            background: #f8fafc;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-
-        .input-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 1.2rem;
-            align-items: center;
-        }
-
-        .input-group label {
-            font-weight: 600;
-            color: #0f172a;
-            background: #eef2ff;
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            font-size: 0.85rem;
-        }
-
-        .url-input {
-            flex: 4;
-            min-width: 240px;
-            padding: 0.85rem 1.2rem;
-            border-radius: 60px;
-            border: 1px solid #cbd5e1;
-            background: white;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            outline: none;
-        }
-
-        .url-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
-        }
-
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .btn {
-            border: none;
-            padding: 0.7rem 1.4rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            color: #1e293b;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: white;
-            box-shadow: 0 4px 8px rgba(37,99,235,0.2);
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        .btn-outline {
-            background: white;
-            border-color: #3b82f6;
-            color: #1e40af;
-        }
-
-        .btn-outline:hover {
-            background: #eff6ff;
-            transform: translateY(-1px);
-        }
-
-        .btn-warning {
-            background: #f59e0b;
-            border-color: #f59e0b;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #d97706;
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            border-color: #ef4444;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .info-message {
-            background: #e6f0ff;
-            border-left: 5px solid #3b82f6;
-            padding: 0.8rem 1.2rem;
-            border-radius: 1rem;
-            font-size: 0.85rem;
-            color: #1e3a8a;
-            margin-bottom: 1.2rem;
-        }
-
-        /* iframe container */
-        .iframe-container {
-            background: #0f172a;
-            border-radius: 1.2rem;
-            overflow: hidden;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.3);
-            border: 1px solid #334155;
-            transition: 0.2s;
-        }
-
-        .iframe-header {
-            background: #0f172a;
-            padding: 0.8rem 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            color: #94a3b8;
-            font-size: 0.8rem;
-            font-family: monospace;
-        }
-
-        .iframe-header span {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .iframe-header .badge-url {
-            background: #1e293b;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            max-width: 350px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-            display: block;
-            background: white;
-        }
-
-        .footer-note {
-            margin-top: 1.8rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #475569;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 1.5rem;
-        }
-
-        @media (max-width: 750px) {
-            .content {
-                padding: 1rem;
-            }
-            iframe {
-                height: 450px;
-            }
-            .btn {
-                padding: 0.5rem 1rem;
-            }
-            .header h1 {
-                font-size: 1.4rem;
-            }
-        }
-
-        .loading {
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
+        body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 1rem; }
+        input, button { padding: 10px; font-size: 1rem; }
+        input { width: 70%; }
+        button { cursor: pointer; margin-left: 10px; }
+        iframe { width: 100%; height: 500px; margin-top: 20px; border: 1px solid #ccc; }
+        .note { background: #f0f0f0; padding: 10px; margin-top: 20px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-
-<div class="card">
-    <div class="header">
-        <h1>Google Apps Script · Peluncur Cepat</h1>
-        <p>Jalankan Web App Google Apps Script langsung di GitHub Pages — tampilkan, navigasi, atau buka tab baru</p>
-        <div class="badge">⚡ otomatis simpan URL terakhir | siap pakai untuk deploy</div>
+    <h2>🚀 Jalankan Google Apps Script Web App</h2>
+    <div>
+        <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec" style="width: 70%;">
+        <button id="runBtn">▶ Tampilkan</button>
+        <button id="newTabBtn">🔗 Buka Tab Baru</button>
+    </div>
+    <iframe id="gasFrame" src="about:blank" title="Google Apps Script"></iframe>
+    <div class="note">
+        💡 <strong>Catatan:</strong> Jika Apps Script tidak bisa tampil di iframe (karena X-Frame-Options), gunakan tombol "Buka Tab Baru".<br>
+        URL akan tersimpan otomatis di browser Anda.
     </div>
 
-    <div class="content">
-        <div class="control-panel">
-            <div class="input-group">
-                <label>🔗 URL Web App</label>
-                <input type="text" id="scriptUrlInput" class="url-input" placeholder="https://script.google.com/macros/s/.../exec" 
-                       value="">
-            </div>
-            <div class="button-group">
-                <button id="loadIframeBtn" class="btn btn-primary">📺 Tampilkan di Halaman (Iframe)</button>
-                <button id="openNewTabBtn" class="btn btn-outline">🔗 Buka di Tab Baru</button>
-                <button id="redirectNowBtn" class="btn btn-outline">🚀 Redirect Sekarang</button>
-                <button id="clearStorageBtn" class="btn btn-danger">🗑 Reset URL Tersimpan</button>
-            </div>
-            <div class="info-message" id="infoMsg">
-                💡 <strong>Tips:</strong> Masukkan URL Web App dari Google Apps Script (deploy sebagai <em>Web App</em>). 
-                URL akan tersimpan secara otomatis & ditampilkan langsung saat halaman dimuat ulang.
-                <br> ✅ Pastikan Apps Script diizinkan untuk di-iframe (X-Frame-Options: ALLOWALL) atau gunakan 'Buka Tab Baru'.
-            </div>
-        </div>
+    <script>
+        const STORAGE_KEY = 'gas_simple_url';
+        const urlInput = document.getElementById('gasUrl');
+        const iframe = document.getElementById('gasFrame');
+        const runBtn = document.getElementById('runBtn');
+        const newTabBtn = document.getElementById('newTabBtn');
 
-        <!-- Container iframe dengan status -->
-        <div class="iframe-container">
-            <div class="iframe-header">
-                <span>📟 <strong>Live Preview (Iframe)</strong></span>
-                <span class="badge-url" id="currentUrlDisplay">Belum ada URL dimuat</span>
-                <span id="iframeStatus" style="font-size:0.7rem;">⚪ idle</span>
-            </div>
-            <iframe id="googleAppsIframe" title="Google Apps Script Web App" src="about:blank" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox"></iframe>
-        </div>
-        <div class="footer-note">
-            🧩 <strong>Catatan teknis:</strong> Jika Apps Script menolak tampil di iframe karena kebijakan <code>X-Frame-Options</code>, 
-            gunakan tombol <strong>"Buka di Tab Baru"</strong> atau <strong>"Redirect"</strong> untuk akses penuh. 
-            Halaman ini menyimpan URL di localStorage — setelah memasukkan URL sekali, reload otomatis menampilkannya.
-        </div>
-    </div>
-</div>
-
-<script>
-    (function() {
-        // DOM elements
-        const urlInput = document.getElementById('scriptUrlInput');
-        const loadIframeBtn = document.getElementById('loadIframeBtn');
-        const openNewTabBtn = document.getElementById('openNewTabBtn');
-        const redirectNowBtn = document.getElementById('redirectNowBtn');
-        const clearStorageBtn = document.getElementById('clearStorageBtn');
-        const googleIframe = document.getElementById('googleAppsIframe');
-        const currentUrlDisplay = document.getElementById('currentUrlDisplay');
-        const iframeStatusSpan = document.getElementById('iframeStatus');
-
-        // Key for localStorage
-        const STORAGE_KEY = 'gas_last_webapp_url';
-
-        // Helper: validasi URL sederhana (harus diawali http/https)
-        function isValidUrl(string) {
-            try {
-                const url = new URL(string);
-                return url.protocol === 'http:' || url.protocol === 'https:';
-            } catch (_) {
-                return false;
+        // load dari storage
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            urlInput.value = saved;
+            // otomatis tampilkan jika ada URL
+            if (saved.trim()) {
+                iframe.src = saved;
             }
         }
 
-        // Update tampilan URL di header iframe dan status
-        function updateDisplayUrl(url) {
-            if (url && isValidUrl(url)) {
-                // Potong jika terlalu panjang untuk tampilan
-                let shortUrl = url.length > 55 ? url.substring(0, 52) + '...' : url;
-                currentUrlDisplay.innerText = shortUrl;
-                currentUrlDisplay.title = url; // tooltip asli
-                return true;
-            } else {
-                currentUrlDisplay.innerText = "⚠️ URL tidak valid atau kosong";
-                currentUrlDisplay.title = "";
-                return false;
-            }
+        function saveUrl(url) {
+            if (url) localStorage.setItem(STORAGE_KEY, url);
         }
 
-        // Menyimpan URL ke localStorage & input field
-        function saveUrlToStorage(url) {
-            if (url && isValidUrl(url)) {
-                localStorage.setItem(STORAGE_KEY, url);
-                return true;
-            } else if (url === "") {
-                // Jika dihapus manual, hapus storage
-                localStorage.removeItem(STORAGE_KEY);
-                return true;
-            }
-            return false;
-        }
-
-        // Memuat URL terakhir dari storage, mengisi input & return URL (jika ada)
-        function loadStoredUrl() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored && isValidUrl(stored)) {
-                urlInput.value = stored;
-                updateDisplayUrl(stored);
-                return stored;
-            } else {
-                // Tidak ada storage valid atau storage corrupt
-                urlInput.value = '';
-                updateDisplayUrl('');
-                return null;
-            }
-        }
-
-        // Menampilkan pesan info dinamis (toast-like di infoMsg)
-        function showInfoMessage(msg, isError = false) {
-            const infoDiv = document.getElementById('infoMsg');
-            infoDiv.style.transition = '0.2s';
-            if (isError) {
-                infoDiv.style.background = '#fee2e2';
-                infoDiv.style.borderLeftColor = '#ef4444';
-                infoDiv.style.color = '#991b1b';
-            } else {
-                infoDiv.style.background = '#e6f0ff';
-                infoDiv.style.borderLeftColor = '#3b82f6';
-                infoDiv.style.color = '#1e3a8a';
-            }
-            infoDiv.innerHTML = `💡 <strong>Info:</strong> ${msg}`;
-            // Reset kembali ke style normal setelah 3 detik (opsional) tapi biarkan agar user lihat
-            setTimeout(() => {
-                if (!isError) {
-                    // kembalikan ke default namun jangan timpa jika pesan error berikutnya
-                    infoDiv.style.background = '#e6f0ff';
-                    infoDiv.style.borderLeftColor = '#3b82f6';
-                    infoDiv.style.color = '#1e3a8a';
-                } else {
-                    // reset setelah 5 detik jadi normal lagi
-                    setTimeout(() => {
-                        infoDiv.style.background = '#e6f0ff';
-                        infoDiv.style.borderLeftColor = '#3b82f6';
-                        infoDiv.style.color = '#1e3a8a';
-                        infoDiv.innerHTML = `💡 <strong>Tips:</strong> Masukkan URL Web App dari Google Apps Script (deploy sebagai <em>Web App</em>). 
-                                            URL akan tersimpan secara otomatis & ditampilkan langsung saat halaman dimuat ulang.
-                                            <br> ✅ Pastikan Apps Script diizinkan untuk di-iframe (X-Frame-Options: ALLOWALL) atau gunakan 'Buka Tab Baru'.`;
-                    }, 4000);
-                }
-            }, 3000);
-        }
-
-        // FUNGSI UTAMA: Memuat iframe dengan URL tertentu
-        function loadIframeWithUrl(url) {
-            if (!url || !isValidUrl(url)) {
-                showInfoMessage(`URL tidak valid: "${url}" → Masukkan URL lengkap (https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec)`, true);
-                iframeStatusSpan.innerHTML = '❌ URL tidak valid';
-                iframeStatusSpan.style.color = '#f87171';
-                googleIframe.src = 'about:blank';
-                updateDisplayUrl(urlInput.value || '');
-                return false;
-            }
-
-            // set iframe src
-            googleIframe.src = url;
-            iframeStatusSpan.innerHTML = '⏳ memuat ...';
-            iframeStatusSpan.style.color = '#facc15';
-            
-            // update tampilan url di header
-            updateDisplayUrl(url);
-            
-            // Simpan ke storage dan input field (pastikan konsisten)
-            urlInput.value = url;
-            saveUrlToStorage(url);
-            
-            // Event listener untuk jika iframe selesai load (hanya untuk indikator)
-            const loadHandler = () => {
-                iframeStatusSpan.innerHTML = '✅ termuat';
-                iframeStatusSpan.style.color = '#4ade80';
-                showInfoMessage(`Berhasil memuat iframe dari ${url.length > 50 ? url.substring(0, 50)+'...' : url}`, false);
-                googleIframe.removeEventListener('load', loadHandler);
-            };
-            const errorHandler = () => {
-                // error tidak bisa dideteksi secara langsung karena cross-origin, tapi timeout alternatif
-                iframeStatusSpan.innerHTML = '⚠️ iframe dimuat (mungkin diblokir)';
-                iframeStatusSpan.style.color = '#f97316';
-                showInfoMessage(`Perhatian: Iframe mungkin gagal ditampilkan karena kebijakan X-Frame-Options dari Google Apps Script. Gunakan "Buka Tab Baru" untuk akses penuh.`, true);
-                googleIframe.removeEventListener('error', errorHandler);
-            };
-            googleIframe.removeEventListener('load', loadHandler);
-            googleIframe.removeEventListener('error', errorHandler);
-            googleIframe.addEventListener('load', loadHandler);
-            googleIframe.addEventListener('error', errorHandler);
-            
-            // timeout fallback: jika 5 detik belum ada event load, anggap bermasalah (tapi tidak hapus)
-            setTimeout(() => {
-                if (iframeStatusSpan.innerHTML === '⏳ memuat ...') {
-                    iframeStatusSpan.innerHTML = '⚠️ timeout / butuh interaksi';
-                    iframeStatusSpan.style.color = '#fb923c';
-                }
-            }, 5000);
-            return true;
-        }
-
-        // Buka tab baru dengan URL
-        function openInNewTab(url) {
-            if (!url || !isValidUrl(url)) {
-                showInfoMessage(`Gagal membuka tab: URL tidak valid "${url}"`, true);
-                return false;
-            }
-            window.open(url, '_blank', 'noopener,noreferrer');
-            showInfoMessage(`Membuka tab baru: ${url.length > 60 ? url.substring(0,60)+'...' : url}`, false);
-            return true;
-        }
-
-        // Redirect halaman saat ini ke URL Apps Script
-        function redirectToUrl(url) {
-            if (!url || !isValidUrl(url)) {
-                showInfoMessage(`Redirect gagal: URL tidak sah "${url}"`, true);
-                return false;
-            }
-            showInfoMessage(`Mengalihkan ke ${url} ...`, false);
-            window.location.href = url;
-            return true;
-        }
-
-        // Tombol hapus storage dan reset iframe
-        function resetStorageAndClear() {
-            localStorage.removeItem(STORAGE_KEY);
-            urlInput.value = '';
-            googleIframe.src = 'about:blank';
-            updateDisplayUrl('');
-            iframeStatusSpan.innerHTML = '⚪ idle';
-            iframeStatusSpan.style.color = '#94a3b8';
-            showInfoMessage('URL tersimpan telah dihapus. Silakan masukkan URL Apps Script baru.', false);
-        }
-
-        // Event listener untuk tombol
-        loadIframeBtn.addEventListener('click', () => {
-            let rawUrl = urlInput.value.trim();
-            if (rawUrl === "") {
-                // coba ambil dari storage jika kosong
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored && isValidUrl(stored)) {
-                    rawUrl = stored;
-                    urlInput.value = stored;
-                } else {
-                    showInfoMessage('https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec', true);
-                    return;
-                }
-            }
-            loadIframeWithUrl(rawUrl);
+        runBtn.addEventListener('click', () => {
+            let url = urlInput.value.trim();
+            if (!url) return alert('Masukkan URL Google Apps Script!');
+            if (!url.startsWith('http')) url = 'https://' + url;
+            iframe.src = url;
+            saveUrl(url);
         });
 
-        openNewTabBtn.addEventListener('click', () => {
-            let rawUrl = urlInput.value.trim();
-            if (!rawUrl) {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored && isValidUrl(stored)) {
-                    rawUrl = stored;
-                    urlInput.value = stored;
-                } else {
-                    showInfoMessage('Tidak ada URL. Masukkan URL Google Apps Script untuk dibuka di tab baru.', true);
-                    return;
-                }
-            }
-            openInNewTab(rawUrl);
+        newTabBtn.addEventListener('click', () => {
+            let url = urlInput.value.trim();
+            if (!url) return alert('Masukkan URL dulu');
+            if (!url.startsWith('http')) url = 'https://' + url;
+            window.open(url, '_blank');
+            saveUrl(url);
         });
-
-        redirectNowBtn.addEventListener('click', () => {
-            let rawUrl = urlInput.value.trim();
-            if (!rawUrl) {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored && isValidUrl(stored)) {
-                    rawUrl = stored;
-                    urlInput.value = stored;
-                } else {
-                    showInfoMessage('Tidak ada URL. Masukkan URL terlebih dahulu untuk redirect.', true);
-                    return;
-                }
-            }
-            redirectToUrl(rawUrl);
-        });
-
-        clearStorageBtn.addEventListener('click', () => {
-            resetStorageAndClear();
-        });
-
-        // ---- Otomatis jalankan saat halaman dimuat (load langsung URL terakhir) ----
-        // Agar "langsung jalan" tanpa interaksi tambahan, kita akan mengambil URL tersimpan
-        // dan mencoba menampilkan di iframe otomatis (jika ada URL valid).
-        function autoLoadStoredScript() {
-            const storedUrl = loadStoredUrl();  // akan mengisi input & kembalikan url string atau null
-            if (storedUrl && isValidUrl(storedUrl)) {
-                // Jeda kecil untuk memastikan DOM siap dan memberikan pengalaman langsung
-                setTimeout(() => {
-                    loadIframeWithUrl(storedUrl);
-                    showInfoMessage(`✅ Otomatis memuat Web App dari penyimpanan: ${storedUrl.length > 65 ? storedUrl.substring(0,65)+'…' : storedUrl}`, false);
-                }, 100);
-            } else {
-                // Tidak ada URL tersimpan -> tampilkan info bahwa pengguna harus memasukkan URL
-                showInfoMessage('✨ Selamat datang! Silakan masukkan URL Google Apps Script (Web App) lalu klik "Tampilkan di Halaman" atau simpan otomatis.', false);
-                iframeStatusSpan.innerHTML = '⚪ menunggu URL';
-                updateDisplayUrl('');
-            }
-        }
-
-        // Event tambahan: ketika pengguna mengetik dan tekan enter, muat iframe
-        urlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                let urlVal = urlInput.value.trim();
-                if (urlVal) {
-                    loadIframeWithUrl(urlVal);
-                } else {
-                    showInfoMessage('URL tidak boleh kosong.', true);
-                }
-            }
-        });
-
-        // Sync perubahan manual dari input field ke penyimpanan jika kehilangan fokus (opsional)
-        urlInput.addEventListener('blur', () => {
-            let urlVal = urlInput.value.trim();
-            if (urlVal && isValidUrl(urlVal)) {
-                saveUrlToStorage(urlVal);
-                updateDisplayUrl(urlVal);
-            } else if (urlVal === "") {
-                // Jangan hapus storage hanya karena blur kosong, biarkan tombol reset khusus
-                // Tapi jika kosong dan sebelumnya ada, kita tidak otomatis hapus
-            } else if (urlVal && !isValidUrl(urlVal)) {
-                showInfoMessage('URL tidak valid (harus http/https) — perbaiki format', true);
-            }
-        });
-
-        // Mulai auto load ketika halaman siap
-        window.addEventListener('DOMContentLoaded', autoLoadStoredScript);
-    })();
-</script>
+    </script>
 </body>
 </html>
