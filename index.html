@@ -1,67 +1,74 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAS Runner - Simple</title>
-    <style>
-        body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 1rem; }
-        input, button { padding: 10px; font-size: 1rem; }
-        input { width: 70%; }
-        button { cursor: pointer; margin-left: 10px; }
-        iframe { width: 100%; height: 500px; margin-top: 20px; border: 1px solid #ccc; }
-        .note { background: #f0f0f0; padding: 10px; margin-top: 20px; font-size: 0.9rem; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Google Apps Script App</title>
+
+  <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/016/716/181/large_2x/website-3d-icon-png.png">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html,body{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      font-family:Arial,sans-serif;
+      background:#f1f5f9;
+    }
+
+    .iframe-container{
+      position:relative;
+      width:100%;
+      height:100vh;
+    }
+
+    iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      background:white;
+    }
+
+    .loader{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      background:white;
+      padding:15px 25px;
+      border-radius:12px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.15);
+      font-size:18px;
+      color:#2563eb;
+      z-index:999;
+    }
+
+  </style>
 </head>
+
 <body>
-    <h2>🚀 Jalankan Google Apps Script Web App</h2>
-    <div>
-        <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec" style="width: 70%;">
-        <button id="runBtn">▶ Tampilkan</button>
-        <button id="newTabBtn">🔗 Buka Tab Baru</button>
-    </div>
-    <iframe id="gasFrame" src="about:blank" title="Google Apps Script"></iframe>
-    <div class="note">
-        💡 <strong>Catatan:</strong> Jika Apps Script tidak bisa tampil di iframe (karena X-Frame-Options), gunakan tombol "Buka Tab Baru".<br>
-        URL akan tersimpan otomatis di browser Anda.
-    </div>
 
-    <script>
-        const STORAGE_KEY = 'gas_simple_url';
-        const urlInput = document.getElementById('gasUrl');
-        const iframe = document.getElementById('gasFrame');
-        const runBtn = document.getElementById('runBtn');
-        const newTabBtn = document.getElementById('newTabBtn');
+<div class="iframe-container">
 
-        // load dari storage
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            urlInput.value = saved;
-            // otomatis tampilkan jika ada URL
-            if (saved.trim()) {
-                iframe.src = saved;
-            }
-        }
+  <div class="loader" id="loader">
+    Loading Google Apps Script...
+  </div>
 
-        function saveUrl(url) {
-            if (url) localStorage.setItem(STORAGE_KEY, url);
-        }
+  <iframe
+    src="https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec"
+    onload="document.getElementById('loader').style.display='none';"
+    allowfullscreen>
+  </iframe>
 
-        runBtn.addEventListener('click', () => {
-            let url = urlInput.value.trim();
-            if (!url) return alert('Masukkan URL Google Apps Script!');
-            if (!url.startsWith('http')) url = 'https://' + url;
-            iframe.src = url;
-            saveUrl(url);
-        });
+</div>
 
-        newTabBtn.addEventListener('click', () => {
-            let url = urlInput.value.trim();
-            if (!url) return alert('Masukkan URL dulu');
-            if (!url.startsWith('http')) url = 'https://' + url;
-            window.open(url, '_blank');
-            saveUrl(url);
-        });
-    </script>
 </body>
 </html>
