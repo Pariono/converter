@@ -115,7 +115,18 @@ async function ambilData(){
 
     // GANTI URL INI DENGAN WEB APP GOOGLE APPS SCRIPT KAMU
     const url = "https://script.google.com/macros/s/AKfycbxUuO2VRprhPuph85_cn2RdcN7gkpcsee1EqIePWsBXaow6w8ugPk5Skrs9xUz7BVw/exec";
+function doGet() {
 
+  const data = {
+    status: "success",
+    message: "Halo dari Google Apps Script 🚀",
+    waktu: new Date().toLocaleString()
+  };
+
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
     try {
 
         const response = await fetch(url);
